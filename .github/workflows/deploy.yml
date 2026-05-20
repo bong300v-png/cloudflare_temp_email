@@ -1,0 +1,77 @@
+name: Deploy to Cloudflare
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'worker/**'
+      - 'frontend/**'
+      - 'pages/**'
+      - 'db/**'
+      - '.github/workflows/deploy.yml'
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - uses: pnpm/action-setup@v5
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+
+      - name: Build Frontend
+        run: cd frontend && pnpm install --no-frozen-lockfile && pnpm build
+
+      - name: Generate wrangler.toml
+        run: |
+          cat > worker/wrangler.toml << 'EOF'
+          name = "cf-mail-vi-worker"
+          main = "src/worker.ts"
+          compatibility_date = "2025-04-01"
+          compatibility_flags = [ "nodejs_compat" ]
+          keep_vars = true
+
+          routes = [
+            { pattern = "mail.drawo.ink", custom_domain = true },
+          ]
+
+          [assets]
+          directory = "../frontend/dist/"
+          binding = "ASSETS"
+          run_worker_first = true
+
+          [vars]
+          PREFIX = "tmp"
+          DEFAULT_DOMAINS = ["drawo.ink"]
+          DOMAINS = ["drawo.ink"]
+          BLACK_LIST = ""
+          ENABLE_USER_CREATE_EMAIL = true
+          ENABLE_USER_DELETE_EMAIL = true
+          ENABLE_AUTO_REPLY = false
+          DEFAULT_LANG = "vi"
+
+          [[d1_databases]]
+          binding = "DB"
+          database_name = "cf_mail_vi"
+          database_id = "c89f261b-41e5-415c-87c2-f70d9da2c019"
+          EOF
+
+      - name: Install Worker Dependencies
+        run: cd worker && pnpm install --no-frozen-lockfile
+
+      - name: Deploy Worker
+        run: cd worker && npx wrangler deploy --minify
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
