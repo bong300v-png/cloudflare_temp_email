@@ -25,7 +25,7 @@
 ### Improvements
 
 - feat: |CI| Add GitHub Actions auto deploy workflow that builds frontend and deploys Cloudflare Worker on push to main
-
+- feat: |Frontend| Add Vietnamese (Tiếng Việt) frontend localization support
 ## v1.8.0
 
 ### Features

@@ -25,7 +25,7 @@
 ### Improvements
 
 - feat: |CI| 添加 GitHub Actions 自动部署工作流，推送到 main 分支时自动构建前端并部署 Cloudflare Worker
-
+- feat: |Frontend| 新增越南语（Tiếng Việt）前端本地化支持
 ## v1.8.0
 
 ### Features
