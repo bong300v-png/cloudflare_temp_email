@@ -5,8 +5,12 @@ export type { SupportedLocale } from './locale-registry'
 
 import type { SupportedLocale } from './locale-registry'
 
-export const DEFAULT_LOCALE: SupportedLocale = 'zh'
-export const FALLBACK_LOCALE: SupportedLocale = 'zh'
+const envDefaultLocale = import.meta.env.VITE_DEFAULT_LOCALE
+export const DEFAULT_LOCALE: SupportedLocale =
+  typeof envDefaultLocale === 'string' && SUPPORTED_LOCALES.includes(envDefaultLocale as SupportedLocale)
+    ? (envDefaultLocale as SupportedLocale)
+    : 'zh'
+export const FALLBACK_LOCALE: SupportedLocale = DEFAULT_LOCALE
 export const PREFERRED_LOCALE_STORAGE_KEY = 'preferredLocale'
 export const EMPTY_LOCALE_MESSAGES = Object.fromEntries(
   SUPPORTED_LOCALES.map((supportedLocale) => [supportedLocale, {}]),

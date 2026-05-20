@@ -25,7 +25,9 @@
 ### Improvements
 
 - feat: |CI| Add GitHub Actions auto deploy workflow that builds frontend and deploys Cloudflare Worker on push to main
+- feat: |CI| Support multi-domain config via `EMAIL_DOMAINS` variable (comma-separated), support custom frontend default locale via `DEFAULT_LOCALE` variable
 - feat: |Frontend| Add Vietnamese (Tiếng Việt) frontend localization support
+- feat: |Frontend| Support customizing frontend default locale via `VITE_DEFAULT_LOCALE` environment variable
 ## v1.8.0
 
 ### Features

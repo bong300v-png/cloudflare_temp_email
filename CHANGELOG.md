@@ -25,7 +25,9 @@
 ### Improvements
 
 - feat: |CI| 添加 GitHub Actions 自动部署工作流，推送到 main 分支时自动构建前端并部署 Cloudflare Worker
+- feat: |CI| 支持通过 `EMAIL_DOMAINS` 变量配置多域名（逗号分隔），支持通过 `DEFAULT_LOCALE` 变量自定义前端默认语言
 - feat: |Frontend| 新增越南语（Tiếng Việt）前端本地化支持
+- feat: |Frontend| 支持通过 `VITE_DEFAULT_LOCALE` 环境变量自定义前端默认语言
 ## v1.8.0
 
 ### Features

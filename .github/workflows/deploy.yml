@@ -32,9 +32,15 @@ jobs:
 
       - name: Build Frontend
         run: cd frontend && pnpm install --no-frozen-lockfile && pnpm build
+        env:
+          VITE_DEFAULT_LOCALE: ${{ vars.DEFAULT_LOCALE || 'zh' }}
 
       - name: Generate wrangler.toml
         run: |
+          # Convert comma-separated DOMAINS to TOML array
+          DOMAINS_TOML=$(echo "${{ vars.EMAIL_DOMAINS || vars.EMAIL_DOMAIN }}" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/.*/"&"/' | paste -sd',' | sed 's/^/[/;s/$/]/')
+          DEFAULT_DOMAINS_TOML=$(echo "${{ vars.DEFAULT_EMAIL_DOMAINS || vars.EMAIL_DOMAIN }}" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/.*/"&"/' | paste -sd',' | sed 's/^/[/;s/$/]/')
+
           cat > worker/wrangler.toml << EOF
           name = "${{ vars.WORKER_NAME }}"
           main = "src/worker.ts"
@@ -53,13 +59,13 @@ jobs:
 
           [vars]
           PREFIX = "tmp"
-          DEFAULT_DOMAINS = ["${{ vars.EMAIL_DOMAIN }}"]
-          DOMAINS = ["${{ vars.EMAIL_DOMAIN }}"]
+          DEFAULT_DOMAINS = ${DEFAULT_DOMAINS_TOML}
+          DOMAINS = ${DOMAINS_TOML}
           BLACK_LIST = ""
           ENABLE_USER_CREATE_EMAIL = true
           ENABLE_USER_DELETE_EMAIL = true
           ENABLE_AUTO_REPLY = false
-          DEFAULT_LANG = "vi"
+          DEFAULT_LANG = "${{ vars.DEFAULT_LOCALE || 'zh' }}"
 
           [[d1_databases]]
           binding = "DB"
