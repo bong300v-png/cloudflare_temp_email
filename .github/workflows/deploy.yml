@@ -35,15 +35,15 @@ jobs:
 
       - name: Generate wrangler.toml
         run: |
-          cat > worker/wrangler.toml << 'EOF'
-          name = "cf-mail-vi-worker"
+          cat > worker/wrangler.toml << EOF
+          name = "${{ vars.WORKER_NAME }}"
           main = "src/worker.ts"
           compatibility_date = "2025-04-01"
           compatibility_flags = [ "nodejs_compat" ]
           keep_vars = true
 
           routes = [
-            { pattern = "mail.drawo.ink", custom_domain = true },
+            { pattern = "${{ vars.WORKER_DOMAIN }}", custom_domain = true },
           ]
 
           [assets]
@@ -53,8 +53,8 @@ jobs:
 
           [vars]
           PREFIX = "tmp"
-          DEFAULT_DOMAINS = ["drawo.ink"]
-          DOMAINS = ["drawo.ink"]
+          DEFAULT_DOMAINS = ["${{ vars.EMAIL_DOMAIN }}"]
+          DOMAINS = ["${{ vars.EMAIL_DOMAIN }}"]
           BLACK_LIST = ""
           ENABLE_USER_CREATE_EMAIL = true
           ENABLE_USER_DELETE_EMAIL = true
@@ -63,8 +63,8 @@ jobs:
 
           [[d1_databases]]
           binding = "DB"
-          database_name = "cf_mail_vi"
-          database_id = "c89f261b-41e5-415c-87c2-f70d9da2c019"
+          database_name = "${{ vars.D1_DATABASE_NAME }}"
+          database_id = "${{ secrets.D1_DATABASE_ID }}"
           EOF
 
       - name: Install Worker Dependencies
