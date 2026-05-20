@@ -4,12 +4,14 @@ import {
   dateEsAR,
   dateJaJP,
   datePtBR,
+  dateViVN,
   dateZhCN,
   deDE,
   enUS,
   esAR,
   jaJP,
   ptBR,
+  viVN,
   zhCN,
 } from 'naive-ui'
 
@@ -70,6 +72,13 @@ export const LOCALE_REGISTRY = [
     browserMatches: ['de'],
     naive: { locale: deDE, dateLocale: dateDeDE },
     turnstileLocale: 'de',
+  },
+  {
+    locale: 'vi',
+    label: 'Tiếng Việt',
+    browserMatches: ['vi'],
+    naive: { locale: viVN, dateLocale: dateViVN },
+    turnstileLocale: 'vi',
   },
 ] as const satisfies readonly LocaleRegistryEntry[]
 

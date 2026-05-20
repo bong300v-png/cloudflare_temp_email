@@ -24,6 +24,8 @@
 
 ### Improvements
 
+- feat: |Frontend| 新增越南语（Tiếng Việt）前端本地化支持
+
 ## v1.8.0
 
 ### Features

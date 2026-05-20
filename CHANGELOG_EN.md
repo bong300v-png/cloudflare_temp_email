@@ -24,6 +24,8 @@
 
 ### Improvements
 
+- feat: |Frontend| Add Vietnamese (Tiếng Việt) frontend localization support
+
 ## v1.8.0
 
 ### Features
