@@ -39,7 +39,7 @@ jobs:
         run: |
           # Convert comma-separated DOMAINS to TOML array
           DOMAINS_TOML=$(echo "${{ vars.EMAIL_DOMAINS || vars.EMAIL_DOMAIN }}" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/.*/"&"/' | paste -sd',' | sed 's/^/[/;s/$/]/')
-          DEFAULT_DOMAINS_TOML=$(echo "${{ vars.DEFAULT_EMAIL_DOMAINS || vars.EMAIL_DOMAIN }}" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/.*/"&"/' | paste -sd',' | sed 's/^/[/;s/$/]/')
+          DEFAULT_DOMAINS_TOML=$(echo "${{ vars.DEFAULT_EMAIL_DOMAINS || vars.EMAIL_DOMAINS || vars.EMAIL_DOMAIN }}" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/.*/"&"/' | paste -sd',' | sed 's/^/[/;s/$/]/')
 
           cat > worker/wrangler.toml << EOF
           name = "${{ vars.WORKER_NAME }}"
