@@ -1,15 +1,13 @@
 name: Upstream Sync
 
 on:
-  schedule:
-    - cron: "0 0 * * 1"
   workflow_dispatch:
 
 jobs:
   sync_latest_from_upstream:
     name: Sync latest commits from upstream repo
     runs-on: ubuntu-latest
-    if: ${{ github.event.repository.fork }}
+    if: false  # disabled: keeps Vietnamese localization on main from being overwritten by upstream
 
     steps:
       - name: Sync upstream changes
